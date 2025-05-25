@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngrok
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngrok
+  template:
+    metadata:
+      labels:
+        app: ngrok
+    spec:
+      containers:
+        - name: ngrok
+          image: {{ .Values.ngrok.image | quote }}
+          command: ["ngrok"]
+          args:
+            - "start"
+            - "--config=/etc/ngrok/ngrok.yml"
+            {{- range .Values.ngrok.tunnels }}
+            - "{{ .name }}"
+            {{- end }}
+          env:
+            - name: NGROK_AUTHTOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ngrok-authtoken
+                  key: authtoken
+          ports:
+            - containerPort: 4040
+          volumeMounts:
+            - name: ngrok-config
+              mountPath: /etc/ngrok/ngrok.yml
+              subPath: ngrok.yml
+      volumes:
+        - name: ngrok-config
+          configMap:
+            name: ngrok-config

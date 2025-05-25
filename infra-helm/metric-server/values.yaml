@@ -1,0 +1,20 @@
+# infra-helm/metrics-server/values.yaml
+replicaCount: 1
+
+args:
+  - --kubelet-insecure-tls     # jika kubelet pakai sertifikat self-signed, biar metrics-server bisa connect
+  - --kubelet-preferred-address-types=InternalIP,Hostname,ExternalIP
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 200Mi
+  requests:
+    cpu: 100m
+    memory: 200Mi
+
+# Optional: jika ingin enable podMonitor buat Prometheus scraping
+serviceMonitor:
+  enabled: false
+
+

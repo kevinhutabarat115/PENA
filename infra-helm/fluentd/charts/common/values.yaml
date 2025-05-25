@@ -1,0 +1,7 @@
+elasticsearch:
+  host: elasticsearch-master.default.svc
+  port: 9200
+  scheme: https
+  user: elastic       # ganti dengan username Elasticsearch kamu
+  password: Xxu1BBQEXwLiyL2J   # ganti dengan passwordnya
+  ssl_verify: false             # kalau pakai self-signed certificate

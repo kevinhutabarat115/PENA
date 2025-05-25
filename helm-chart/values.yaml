@@ -1,0 +1,46 @@
+replicaCount: 2
+
+image:
+  repository: kevinpolin/technial-test-pena
+  tag: v4
+  pullPolicy: IfNotPresent
+
+
+service:
+  type: NodePort
+  port: 8080
+  nodePort: 30080
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 250m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false         # kalau true => scaller pod pakai HPA native
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+keda:
+  enabled: true        # kalau true => scaller pod pakai KEDA scaler
+  maxRequestsPerPod: 50
+  prometheus:
+    serverAddress: http://prometheus-kube-prometheus-prometheus.default.svc:9090
+
+
+serviceMonitor:
+  enabled: true
+
+# ingress:
+#   enabled: true
+#   host: pena.local
+
+service:
+  port: 8080
+
+appSelector: my-nodejs-chart
+

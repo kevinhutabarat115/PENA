@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ngrok-config
+data:
+  ngrok.yml: |
+    version: "2" 
+    authtoken: {{ .Values.ngrok.authtoken }}
+    region: {{ .Values.ngrok.region }}
+    tunnels:
+    {{- range .Values.ngrok.tunnels }}
+      {{ .name }}:
+        proto: {{ .proto }}
+        addr: {{ .addr }}
+    {{- end }}

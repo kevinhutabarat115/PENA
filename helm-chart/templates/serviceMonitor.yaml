@@ -1,0 +1,19 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "pena-app.fullname" . }}-monitor
+  labels:
+    release: prometheus                   # Pastikan Prometheus match label ini
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "pena-app.name" . }}  # Harus cocok dengan label di Service
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}          # Scrape dari namespace release Helm ini
+  endpoints:
+    - port: http                          # Harus match dengan name port di Service
+      path: /metrics                      # Endpoint Prometheus metrics
+      interval: 15s
+{{- end }}

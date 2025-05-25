@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "prometheus-grafana.fullname" . }}-ingress
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "prometheus-grafana.labels" . | nindent 4 }}
+  annotations:
+    # kalau perlu rewrite target, tapi biasanya Prometheus bisa langsung akses root, jadi bisa dihapus
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx  # pastikan pakai ingress class nginx
+  rules:
+    - host: prometheus.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-kube-prometheus-prometheus
+                port:
+                  number: 9090

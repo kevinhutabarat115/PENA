@@ -1,0 +1,21 @@
+{{- if and .Values.keda.enabled (not .Values.autoscaling.enabled) }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "pena-app.fullname" . }}-scaledobject
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "pena-app.fullname" . }}
+  minReplicaCount: {{ .Values.autoscaling.minReplicas }}
+  maxReplicaCount: {{ .Values.autoscaling.maxReplicas }}
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: "{{ .Values.keda.prometheus.serverAddress }}"
+        metricName: http_requests_per_pod
+        threshold: "{{ .Values.keda.maxRequestsPerPod }}"
+        query: |
+          sum(rate(http_requests_total[1m]))
+{{- end }}

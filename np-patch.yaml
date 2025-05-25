@@ -1,0 +1,12 @@
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: forwarder
+    ports:
+    - port: 24224
+      protocol: TCP
+    - port: 9880
+      protocol: TCP
+

@@ -1,0 +1,25 @@
+ngrok:
+  authtoken: "2lBS0osRsu8aPSIgSH3TaGkbxS9_2H3XEJkcJ7T2ZPMGK4QJn"
+  image: "kevinpolin/ngrok-pena:v2"
+  region: "us"
+  tunnels:
+    # pake dibawah jika ingin lewat clusterIP dlu
+    #- name: "http"
+    #  proto: "http"
+    #  addr: "pena-app-my-nodejs-chart.default.svc.cluster.local:8080"
+    # kalau dibawah ini yang pake headless tanpa lewat cluster ip
+    - name: "http"
+      proto: "http"
+      addr: pena-app-my-nodejs-chart-headless.default.svc.cluster.local:8080
+    - name: "grafana"
+      proto: "http"
+      addr: "prometheus-grafana.default.svc.cluster.local:80"
+    - name: "kibana"
+      proto: "http"
+      addr: "kibana-kibana.default.svc.cluster.local:5601"
+    # Expose pake Ngrok hanya bisa 3 domain untuk akun free
+    # - name: "prometheus"
+    #   proto: "http"
+    #   addr: "prometheus-kube-prometheus-prometheus.default.svc.cluster.local:9090"
+
+
