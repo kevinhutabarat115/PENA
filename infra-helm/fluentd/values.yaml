@@ -1599,7 +1599,6 @@ aggregator:
 
 aggregator:
   enabled: true
-
   service:
     type: ClusterIP
     ports:
