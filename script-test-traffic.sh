@@ -1,5 +1,5 @@
 #!/bin/bash
-# Ganti URL_APLIKASI dengan URL/service kamu, bisa IP ClusterIP, atau DNS service
+# Ganti URL_APLIKASI dengan URL/service , bisa IP ClusterIP, atau DNS service
 
 URL_APLIKASI="http://pena-app-my-nodejs-chart.default.svc.cluster.local"
 
